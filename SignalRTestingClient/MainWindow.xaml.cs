@@ -15,7 +15,7 @@ public partial class MainWindow : Window
     private HubConnection _connection = default!;
     private List<object> _arguments = new ();
     private object _currentSelectedArgument = default!;
-    private string jwt = String.Empty;
+    private string jwt = string.Empty;
 
     public MainWindow()
     {
@@ -125,6 +125,12 @@ public partial class MainWindow : Window
         }
         catch (HttpRequestException exception)
         {
+            if (exception.StatusCode == null)
+            {
+                Log(exception.Message);
+                return;
+            }
+
             if (exception.StatusCode == HttpStatusCode.NotFound)
                 Log("Not Found! (404)");
             else if (exception.StatusCode == HttpStatusCode.Unauthorized)
