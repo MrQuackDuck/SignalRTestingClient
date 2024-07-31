@@ -10,10 +10,11 @@ A **WPF client** for **testing SignalR APIs**.
 
 ## ⚡ Features
 - ✅ Connect to **SignalR hubs**
-- ✅ **Invoke hub's methods** with **arguments** and getting values in return
-- ✅ **Listen for signals** from certain methods from the hub
+- ✅ **Invoke hub's methods** with **arguments** and get values in return
+- ✅ **Listen for signals** from certain methods of the hub
 - ✅ **Set** the value for the **"Authorization"** header (**JWT token**)
-- ❌ Set **custom headers** for the connection
+- ❌ **Set custom headers** for the connection
+- ❌ **Save the state** of the app
 
 ## 📷 Screenshots
 <img height=300 src="https://github.com/user-attachments/assets/71bd023a-48d7-4c63-b127-cb90d407307c" />
