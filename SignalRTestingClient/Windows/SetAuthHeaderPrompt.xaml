@@ -1,0 +1,29 @@
+﻿<Window x:Class="SignalRTestingClient.SetAuthHeaderPrompt"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SignalRTestingClient"
+        mc:Ignorable="d"
+        Title="Set the authentication header" Height="130" Width="400"
+        ResizeMode="NoResize">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*"></RowDefinition>
+            <RowDefinition Height="0.8*"></RowDefinition>
+            <RowDefinition Height="0.8*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <TextBlock Cursor="Arrow" Grid.Row="0" VerticalAlignment="Center" Margin="8,0,8,-2" Grid.ColumnSpan="2">You can insert the JWT token below</TextBlock>
+
+        <TextBox x:Name="JWT" Grid.Row="1" Margin="8" Grid.ColumnSpan="2" VerticalContentAlignment="Center"></TextBox>
+        
+        <Button x:Name="SetBtn" Click="SetBtn_Click" Content="Set" FontSize="16" Margin="8,4,5,10" Grid.Column="0" Grid.Row="3" Cursor="Hand" />
+        <Button x:Name="CancelBtn" Click="CancelBtn_Click" Content="Cancel" FontSize="16" Margin="5,4,8,10" Grid.Column="1" Grid.Row="3" Cursor="Hand" />
+    </Grid>
+</Window>

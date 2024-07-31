@@ -1,0 +1,76 @@
+﻿<Window x:Class="SignalRTestingClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SignalRTestingClient"
+        mc:Ignorable="d"
+        ResizeMode="CanMinimize"
+        Title="SignalR Testing Client" Height="670" Width="1200">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.04*"></RowDefinition>
+            <RowDefinition Height="0.2*"></RowDefinition>
+            <RowDefinition Height="0.04*"></RowDefinition>
+            <RowDefinition Height="0.2*"></RowDefinition>
+            <RowDefinition Height="0.04*"></RowDefinition>
+            <RowDefinition Height="0.4*"></RowDefinition>
+            <RowDefinition Height="0.04*"></RowDefinition>
+            <RowDefinition Height="0.2*"></RowDefinition>
+            <RowDefinition Height="0.2*"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="0.1*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="0.150*"></ColumnDefinition>
+            <ColumnDefinition Width="0.150*"></ColumnDefinition>
+            <ColumnDefinition Width="0.150*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Margin="8,0,0,-4" VerticalAlignment="Bottom">URL to connect:</TextBlock>
+        <TextBox x:Name="URL" Grid.Row="1" Grid.Column="0" FontSize="20" Margin="8,8,4,8" VerticalContentAlignment="Center"  Text="http://localhost:7700/API/Registration?queueToken="></TextBox>
+        <Button x:Name="ConnectBtn" Cursor="Hand" Click="ConnectBtn_Click" Grid.Row="1" Grid.Column="1" Margin="4,8,2,8" FontSize="20" Background="#FF58D0E8" BorderBrush="#FF3CAFCC" Foreground="White">Connect</Button>
+        <Button x:Name="DisconnectBtn" Cursor="Hand" Click="DisconnectBtn_Click" Grid.Row="1" Grid.Column="2" Margin="2,8,2,8" FontSize="20" Background="#FF47B1C7" BorderBrush="#FF2C8BA4" IsEnabled="False" Foreground="White">Disconnect</Button>
+        <Button x:Name="AuthBtn" Cursor="Hand" Click="AuthBtn_Click" Grid.Row="1" Grid.Column="3" Margin="2,8,8,8" FontSize="20" Background="#FFF4CA16" BorderBrush="#FFB39411" Foreground="White">Auth</Button>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Margin="8,0,0,-4" VerticalAlignment="Bottom">SignalR Method to call:</TextBlock>
+        <TextBox x:Name="Action" Grid.Row="3" Grid.Column="0" FontSize="20" Margin="8,8,4,8" VerticalContentAlignment="Center" Text="SendSignal"></TextBox>
+        <Button x:Name="SendBtn" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Cursor="Hand" Click="SendBtn_Click" Margin="4,8,2,8" FontSize="20" Background="#FF6CDA4E" BorderBrush="#FF36A238" Foreground="White" IsEnabled="False">Send ▶</Button>
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Margin="8,0,0,-12" VerticalAlignment="Bottom">Arguments to send:</TextBlock>
+        <ListBox 
+            x:Name="ArgumentsList"
+            SelectionChanged="ArgumentsList_SelectionChanged"
+            Grid.Row="5"
+            Grid.Column="0"
+            d:ItemsSource="{d:SampleData ItemCount=5}"
+            Margin="8,4,4,8"
+            FontSize="16"
+            Background="White"/>
+
+        <Button Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Top" Padding="8" x:Name="AddArgument" Cursor="Hand" Click="AddArgument_Click" Margin="4,4,2,8" FontSize="18" Foreground="White" BorderBrush="#FFD4743C" Background="#FFE6923D">Add an argument</Button>
+        <Button Grid.Row="5" Grid.Column="3" VerticalAlignment="Top" Padding="8" x:Name="RemoveArgument" Cursor="Hand" Click="RemoveArgument_Click" Margin="2,4,2,8" FontSize="18" Foreground="White" BorderBrush="#FF520F0F" Background="#FFD45151" IsEnabled="False">Remove arg.</Button>
+
+        <TextBlock Grid.Row="6" Grid.Column="0" Margin="8,0,0,-4" VerticalAlignment="Bottom">Receive signals from these methods (separated by comma):</TextBlock>
+        <TextBox Grid.Row="7" Grid.Column="0" x:Name="AcceptMethods" KeyUp="AcceptMethods_KeyUp" Text="ReceiveMessages, ReceiveSignal" FontSize="20" Margin="8,8,4,8" VerticalContentAlignment="Center"></TextBox>
+
+        <ListBox 
+            x:Name="LogList"
+            Grid.Row="8"
+            Grid.Column="0"
+            Grid.RowSpan="2"
+            d:ItemsSource="{d:SampleData ItemCount=5}"
+            Margin="8,4,4,8"
+            FontSize="16"
+            Background="White">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBox IsReadOnly="True" BorderThickness="0" Text="{Binding ., Mode=OneWay}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        <Button x:Name="ClearLogsBtn" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" Cursor="Hand" Click="ClearLogsBtn_Click" Margin="4,4,8,8" FontSize="20" Background="#FFE83737" BorderBrush="#FFAB3434" IsEnabled="False" Foreground="White">Clear logs</Button>
+    </Grid>
+</Window>
