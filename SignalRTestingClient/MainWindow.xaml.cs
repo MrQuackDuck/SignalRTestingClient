@@ -7,15 +7,13 @@ using System.Windows;
 
 namespace SignalRTestingClient;
 
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
 public partial class MainWindow : Window
 {
     private HubConnection _connection = default!;
     private List<object> _arguments = new ();
     private object _currentSelectedArgument = default!;
     private string jwt = string.Empty;
+    private List<string> methodsToListen = new();
 
     public MainWindow()
     {
@@ -29,7 +27,7 @@ public partial class MainWindow : Window
     /// </summary>
     /// <param name="address">URL to connect to</param>
     /// <returns>A SignalR connection with the server</returns>
-    private HubConnection Connect(string address)
+    private HubConnection BuildHubConnection(string address)
     {
         return new HubConnectionBuilder()
             .WithUrl(address, httpConfigure =>
@@ -61,6 +59,12 @@ public partial class MainWindow : Window
     private void ApplyHandlersForIncomingMethods()
     {
         if (_connection is null) return;
+
+        // Clearing the list
+        foreach (var method in methodsToListen)
+            _connection.Remove(method);
+
+        methodsToListen = new();
 
         // Getting the value of "AcceptMethods" input, removing whitespaces
         var methodsStr = AcceptMethods.Text.Replace(" ", string.Empty);
@@ -97,7 +101,8 @@ public partial class MainWindow : Window
     {
         try
         {
-            _connection = Connect(URL.Text);
+            ConnectBtn.IsEnabled = false;
+            _connection = BuildHubConnection(URL.Text);
             ApplyHandlersForIncomingMethods();
             await _connection.StartAsync();
 
@@ -109,8 +114,9 @@ public partial class MainWindow : Window
                 Dispatcher.Invoke(() =>
                 {
                     AuthBtn.IsEnabled = true;
+                    ConnectBtn.IsEnabled = true;
                     DisconnectBtn.IsEnabled = false;
-                    SendBtn.IsEnabled = false;
+                    InvokeBtn.IsEnabled = false;
                     Log(message);
                 });
 
@@ -121,10 +127,12 @@ public partial class MainWindow : Window
 
             AuthBtn.IsEnabled = false;
             DisconnectBtn.IsEnabled = true;
-            SendBtn.IsEnabled = true;
+            InvokeBtn.IsEnabled = true;
         }
         catch (HttpRequestException exception)
         {
+            ConnectBtn.IsEnabled = true;
+
             if (exception.StatusCode == null)
             {
                 Log(exception.Message);
@@ -140,52 +148,73 @@ public partial class MainWindow : Window
         }
         catch (ConnectionClosedException)
         {
+            ConnectBtn.IsEnabled = true;
             Log("Connection not started!");
         }
         catch (NotSupportedException)
         {
+            ConnectBtn.IsEnabled = true;
             Log("Provided URL is not valid!");
         }
         catch (UriFormatException)
         {
+            ConnectBtn.IsEnabled = true;
             Log("Provided URL is not valid!");
         }
     }
 
     /// <summary>
+    /// Waits for "Enter" to activate the "ConnectBtn" button
+    /// </summary>
+    private void URL_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+    {
+        if (e.Key == System.Windows.Input.Key.Enter && ConnectBtn.IsEnabled)
+            ConnectBtn_Click(this, null!);
+    }
+
+    /// <summary>
+    /// Waits for "Enter" to activate the "InvokeBtn" button
+    /// </summary>
+    private void InvokationMethod_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+    {
+        if (e.Key == System.Windows.Input.Key.Enter && InvokeBtn.IsEnabled)
+            InvokeBtn_Click(this, null!);
+    }
+
+    /// <summary>
     /// Invokes the SignalR method on the server
     /// </summary>
-    private async void SendBtn_Click(object sender, RoutedEventArgs e)
+    private async void InvokeBtn_Click(object sender, RoutedEventArgs e)
     {
         try
         {
-            object result = default!;
+            object invocationResult = default!;
 
-            // Sorry for that code, but it's the fault of the SignalR client library. Not mine
+            // Sorry for that code, but it's the fault of the SignalR client library, not mine ¯\_(ツ)_/¯
             if (_arguments.Count == 0)
-                result = await _connection.InvokeAsync<object>(Action.Text);
+                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text);
             else if (_arguments.Count == 1)
-                result = await _connection.InvokeAsync<object>(Action.Text, _arguments[0]);
+                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0]);
             else if (_arguments.Count == 2)
-                result = await _connection.InvokeAsync<object>(Action.Text, _arguments[0], _arguments[1]);
+                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0], _arguments[1]);
             else if (_arguments.Count == 3)
-                result = await _connection.InvokeAsync<object>(Action.Text, _arguments[0], _arguments[1], _arguments[2]);
+                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0], _arguments[1], _arguments[2]);
             else if (_arguments.Count == 4)
-                result = await _connection.InvokeAsync<object>(Action.Text, _arguments[0], _arguments[1], _arguments[2], _arguments[3]);
+                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0], _arguments[1], _arguments[2], _arguments[3]);
             else if (_arguments.Count == 5)
-                result = await _connection.InvokeAsync<object>(Action.Text, _arguments[0], _arguments[1], _arguments[2], _arguments[3], _arguments[4]);
+                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0], _arguments[1], _arguments[2], _arguments[3], _arguments[4]);
             else if (_arguments.Count == 6)
-                result = await _connection.InvokeAsync<object>(Action.Text, _arguments[0], _arguments[1], _arguments[2], _arguments[3], _arguments[4], _arguments[5]);
+                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0], _arguments[1], _arguments[2], _arguments[3], _arguments[4], _arguments[5]);
             else if (_arguments.Count == 7)
-                result = await _connection.InvokeAsync<object>(Action.Text, _arguments[0], _arguments[1], _arguments[2], _arguments[3], _arguments[4], _arguments[5], _arguments[6]);
+                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0], _arguments[1], _arguments[2], _arguments[3], _arguments[4], _arguments[5], _arguments[6]);
             else if (_arguments.Count == 8)
-                result = await _connection.InvokeAsync<object>(Action.Text, _arguments[0], _arguments[1], _arguments[2], _arguments[3], _arguments[4], _arguments[5], _arguments[6], _arguments[7]);
+                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0], _arguments[1], _arguments[2], _arguments[3], _arguments[4], _arguments[5], _arguments[6], _arguments[7]);
             else if (_arguments.Count == 9)
-                result = await _connection.InvokeAsync<object>(Action.Text, _arguments[0], _arguments[1], _arguments[2], _arguments[3], _arguments[4], _arguments[5], _arguments[6], _arguments[7], _arguments[8]);
+                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0], _arguments[1], _arguments[2], _arguments[3], _arguments[4], _arguments[5], _arguments[6], _arguments[7], _arguments[8]);
             else if (_arguments.Count == 10)
-                result = await _connection.InvokeAsync<object>(Action.Text, _arguments[0], _arguments[1], _arguments[2], _arguments[3], _arguments[4], _arguments[5], _arguments[6], _arguments[7], _arguments[8], _arguments[9]);
+                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0], _arguments[1], _arguments[2], _arguments[3], _arguments[4], _arguments[5], _arguments[6], _arguments[7], _arguments[8], _arguments[9]);
 
-            Log(result.ToString()!);
+            Log(invocationResult.ToString()!);
         }
         catch (TaskCanceledException)
         {
@@ -220,6 +249,7 @@ public partial class MainWindow : Window
     private void AuthBtn_Click(object sender, RoutedEventArgs e)
     {
         var prompt = new SetAuthHeaderPrompt(jwt);
+        prompt.WindowStartupLocation = WindowStartupLocation.CenterScreen;
         prompt.SetBtnClicked += token=>
         {
             jwt = token;
@@ -242,6 +272,7 @@ public partial class MainWindow : Window
     private void AddArgument_Click(object sender, RoutedEventArgs e)
     {
         var prompt = new AddArgumentPrompt();
+        prompt.WindowStartupLocation = WindowStartupLocation.CenterScreen;
         prompt.AddBtnClicked += o =>
         {
             _arguments.Add(o);

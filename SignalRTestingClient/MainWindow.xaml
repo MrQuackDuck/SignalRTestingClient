@@ -17,6 +17,7 @@
             <RowDefinition Height="0.4*"></RowDefinition>
             <RowDefinition Height="0.04*"></RowDefinition>
             <RowDefinition Height="0.2*"></RowDefinition>
+            <RowDefinition Height="0.04*"></RowDefinition>
             <RowDefinition Height="0.2*"></RowDefinition>
             <RowDefinition Height="1.1*"></RowDefinition>
         </Grid.RowDefinitions>
@@ -29,16 +30,16 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Row="0" Grid.Column="0" Margin="8,0,0,-4" VerticalAlignment="Bottom">URL to connect:</TextBlock>
-        <TextBox x:Name="URL" Grid.Row="1" Grid.Column="0" FontSize="20" Margin="8,8,4,8" VerticalContentAlignment="Center"  Text="http://localhost:7700/API/Registration?queueToken="></TextBox>
+        <TextBox x:Name="URL" Grid.Row="1" KeyUp="URL_KeyUp" Grid.Column="0" FontSize="20" Margin="8,8,4,8" VerticalContentAlignment="Center"  Text="http://localhost:7700/API/Chat?paramOne=410&#38;paramTwo=test"></TextBox>
         <Button x:Name="ConnectBtn" Cursor="Hand" Click="ConnectBtn_Click" Grid.Row="1" Grid.Column="1" Margin="4,8,2,8" FontSize="20" Background="#FF58D0E8" BorderBrush="#FF3CAFCC" Foreground="White">Connect</Button>
         <Button x:Name="DisconnectBtn" Cursor="Hand" Click="DisconnectBtn_Click" Grid.Row="1" Grid.Column="2" Margin="2,8,2,8" FontSize="20" Background="#FF47B1C7" BorderBrush="#FF2C8BA4" IsEnabled="False" Foreground="White">Disconnect</Button>
         <Button x:Name="AuthBtn" Cursor="Hand" Click="AuthBtn_Click" Grid.Row="1" Grid.Column="3" Margin="2,8,8,8" FontSize="20" Background="#FFF4CA16" BorderBrush="#FFB39411" Foreground="White">Auth</Button>
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Margin="8,0,0,-4" VerticalAlignment="Bottom">SignalR Method to call:</TextBlock>
-        <TextBox x:Name="Action" Grid.Row="3" Grid.Column="0" FontSize="20" Margin="8,8,4,8" VerticalContentAlignment="Center" Text="SendSignal"></TextBox>
-        <Button x:Name="SendBtn" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Cursor="Hand" Click="SendBtn_Click" Margin="4,8,2,8" FontSize="20" Background="#FF6CDA4E" BorderBrush="#FF36A238" Foreground="White" IsEnabled="False">Send ▶</Button>
+        <TextBlock Grid.Row="2" Grid.Column="0" Margin="8,0,0,-4" VerticalAlignment="Bottom">SignalR Method to invoke:</TextBlock>
+        <TextBox x:Name="InvokationMethod" KeyUp="InvokationMethod_KeyUp" Grid.Row="3" Grid.Column="0" FontSize="20" Margin="8,8,4,8" VerticalContentAlignment="Center">SendMessage</TextBox>
+        <Button x:Name="InvokeBtn" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Cursor="Hand" Click="InvokeBtn_Click" Margin="4,8,2,8" FontSize="20" Background="#FF6CDA4E" BorderBrush="#FF36A238" Foreground="White" IsEnabled="False">Invoke ▶</Button>
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Margin="8,0,0,-12" VerticalAlignment="Bottom">Arguments to send:</TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="0" Margin="8,0,0,-12" VerticalAlignment="Bottom">Method arguments:</TextBlock>
         <ListBox 
             x:Name="ArgumentsList"
             SelectionChanged="ArgumentsList_SelectionChanged"
@@ -53,11 +54,12 @@
         <Button Grid.Row="5" Grid.Column="3" VerticalAlignment="Top" Padding="8" x:Name="RemoveArgument" Cursor="Hand" Click="RemoveArgument_Click" Margin="2,4,2,8" FontSize="18" Foreground="White" BorderBrush="#FF520F0F" Background="#FFD45151" IsEnabled="False">Remove arg.</Button>
 
         <TextBlock Grid.Row="6" Grid.Column="0" Margin="8,0,0,-4" VerticalAlignment="Bottom">Receive signals from these methods (separated by comma):</TextBlock>
-        <TextBox Grid.Row="7" Grid.Column="0" x:Name="AcceptMethods" KeyUp="AcceptMethods_KeyUp" Text="ReceiveMessages, ReceiveSignal" FontSize="20" Margin="8,8,4,8" VerticalContentAlignment="Center"></TextBox>
+        <TextBox Grid.Row="7" Grid.Column="0" x:Name="AcceptMethods" KeyUp="AcceptMethods_KeyUp" Text="ReceiveMessage, MessageUpdated, MessageDeleted" FontSize="20" Margin="8,8,4,8" VerticalContentAlignment="Center"></TextBox>
 
+        <TextBlock Grid.Row="8" Grid.Column="0" Margin="8,0,0,-2" VerticalAlignment="Bottom">Logs:</TextBlock>
         <ListBox 
             x:Name="LogList"
-            Grid.Row="8"
+            Grid.Row="9"
             Grid.Column="0"
             Grid.RowSpan="2"
             d:ItemsSource="{d:SampleData ItemCount=5}"
@@ -70,6 +72,6 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-        <Button x:Name="ClearLogsBtn" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" Cursor="Hand" Click="ClearLogsBtn_Click" Margin="4,4,8,8" FontSize="20" Background="#FFE83737" BorderBrush="#FFAB3434" IsEnabled="False" Foreground="White">Clear logs</Button>
+        <Button x:Name="ClearLogsBtn" Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2" Cursor="Hand" Click="ClearLogsBtn_Click" Margin="4,4,8,8" FontSize="20" Background="#FFE83737" BorderBrush="#FFAB3434" IsEnabled="False" Foreground="White">Clear logs</Button>
     </Grid>
 </Window>
