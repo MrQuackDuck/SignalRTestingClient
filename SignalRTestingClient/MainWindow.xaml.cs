@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.DependencyInjection;
 using SignalRTestingClient.Exceptions;
+using SignalRTestingClient.Models;
 using System.Net;
 using System.Net.Http;
 using System.Windows;
@@ -10,8 +12,8 @@ namespace SignalRTestingClient;
 public partial class MainWindow : Window
 {
     private HubConnection _connection = default!;
-    private List<object> _arguments = new ();
-    private object _currentSelectedArgument = default!;
+    private List<SignalRArgument> _arguments = new ();
+    private SignalRArgument _currentSelectedArgument = default!;
     private string jwt = string.Empty;
     private List<string> methodsToListen = new();
 
@@ -35,6 +37,7 @@ public partial class MainWindow : Window
                 if (jwt.Length == 0) return;
                 httpConfigure.Headers.Add("Authorization", $"Bearer {jwt}");
             })
+            .AddNewtonsoftJsonProtocol()
             .Build();
     }
 
@@ -194,25 +197,25 @@ public partial class MainWindow : Window
             if (_arguments.Count == 0)
                 invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text);
             else if (_arguments.Count == 1)
-                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0]);
+                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0].Content);
             else if (_arguments.Count == 2)
-                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0], _arguments[1]);
+                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0].Content, _arguments[1].Content);
             else if (_arguments.Count == 3)
-                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0], _arguments[1], _arguments[2]);
+                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0].Content, _arguments[1].Content, _arguments[2].Content);
             else if (_arguments.Count == 4)
-                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0], _arguments[1], _arguments[2], _arguments[3]);
+                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0].Content, _arguments[1].Content, _arguments[2].Content, _arguments[3].Content);
             else if (_arguments.Count == 5)
-                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0], _arguments[1], _arguments[2], _arguments[3], _arguments[4]);
+                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0].Content, _arguments[1].Content, _arguments[2].Content, _arguments[3].Content, _arguments[4].Content);
             else if (_arguments.Count == 6)
-                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0], _arguments[1], _arguments[2], _arguments[3], _arguments[4], _arguments[5]);
+                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0].Content, _arguments[1].Content, _arguments[2].Content, _arguments[3].Content, _arguments[4].Content, _arguments[5].Content);
             else if (_arguments.Count == 7)
-                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0], _arguments[1], _arguments[2], _arguments[3], _arguments[4], _arguments[5], _arguments[6]);
+                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0].Content, _arguments[1].Content, _arguments[2].Content, _arguments[3].Content, _arguments[4].Content, _arguments[5].Content, _arguments[6].Content);
             else if (_arguments.Count == 8)
-                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0], _arguments[1], _arguments[2], _arguments[3], _arguments[4], _arguments[5], _arguments[6], _arguments[7]);
+                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0].Content, _arguments[1].Content, _arguments[2].Content, _arguments[3].Content, _arguments[4].Content, _arguments[5].Content, _arguments[6].Content, _arguments[7].Content);
             else if (_arguments.Count == 9)
-                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0], _arguments[1], _arguments[2], _arguments[3], _arguments[4], _arguments[5], _arguments[6], _arguments[7], _arguments[8]);
+                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0].Content, _arguments[1].Content, _arguments[2].Content, _arguments[3].Content, _arguments[4].Content, _arguments[5].Content, _arguments[6].Content, _arguments[7].Content, _arguments[8].Content);
             else if (_arguments.Count == 10)
-                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0], _arguments[1], _arguments[2], _arguments[3], _arguments[4], _arguments[5], _arguments[6], _arguments[7], _arguments[8], _arguments[9]);
+                invocationResult = await _connection.InvokeAsync<object>(InvokationMethod.Text, _arguments[0].Content, _arguments[1].Content, _arguments[2].Content, _arguments[3].Content, _arguments[4].Content, _arguments[5].Content, _arguments[6].Content, _arguments[7].Content, _arguments[8].Content, _arguments[9].Content);
 
             Log(invocationResult.ToString()!);
         }
@@ -292,7 +295,7 @@ public partial class MainWindow : Window
     {
         if (ArgumentsList.SelectedItem == null) return;
 
-        _currentSelectedArgument = ArgumentsList.SelectedItem;
+        _currentSelectedArgument = (SignalRArgument)ArgumentsList.SelectedItem;
         RemoveArgument.IsEnabled = true;
     }
 

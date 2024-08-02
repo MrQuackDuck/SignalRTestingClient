@@ -1,7 +1,8 @@
 ﻿using Newtonsoft.Json;
-using System.Data;
+using Newtonsoft.Json.Linq;
+using SignalRTestingClient.Models;
+using System.Dynamic;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -12,12 +13,23 @@ namespace SignalRTestingClient;
 /// </summary>
 public partial class AddArgumentPrompt : Window
 {
-    public Action<object>? AddBtnClicked { get; set; }
+    public Action<SignalRArgument>? AddBtnClicked { get; set; }
 
     public AddArgumentPrompt()
     {
         InitializeComponent();
     }
+
+    #region Methods
+
+    private void ShowError(string message)
+    {
+        MessageBox.Show(message, "An error occurred!", MessageBoxButton.OK, MessageBoxImage.Error);
+    }
+
+    #endregion
+
+    #region Handlers
 
     private void AddBtn_Click(object sender, RoutedEventArgs e)
     {
@@ -25,21 +37,22 @@ public partial class AddArgumentPrompt : Window
         {
             var argumentType = (string)((ComboBoxItem)ArgType.SelectedItem).Content;
 
-            object argumentToSend = default!;
+            SignalRArgument argumentToSend = new();
+            argumentToSend.Name = Argument.Text;
 
             if (argumentType.ToLower() == "Numeric value".ToLower())
             {
-                argumentToSend = double.Parse(Argument.Text);
-            }
-            else if (argumentType.ToLower() == "String value".ToLower())
-            {
-                argumentToSend = JsonConvert.SerializeObject(Argument.Text);
+                argumentToSend.Content = double.Parse(Argument.Text);
             }
             else if (argumentType.ToLower() == "JSON".ToLower())
             {
-                argumentToSend = Argument.Text;
+                argumentToSend.Content = JsonConvert.DeserializeObject(Argument.Text)!;
             }
-
+            else if (argumentType.ToLower() == "String value".ToLower())
+            {
+                argumentToSend.Content = Argument.Text;
+            }
+            
             AddBtnClicked?.Invoke(argumentToSend);
 
             Close();
@@ -47,6 +60,10 @@ public partial class AddArgumentPrompt : Window
         catch (NullReferenceException)
         {
             ShowError("You haven't selected the type!");
+        }
+        catch (JsonReaderException)
+        {
+            ShowError("Invalid JSON!");
         }
         catch (FormatException)
         {
@@ -59,8 +76,5 @@ public partial class AddArgumentPrompt : Window
         Close();
     }
 
-    private void ShowError(string message)
-    {
-        MessageBox.Show(message, "An error occurred!", MessageBoxButton.OK, MessageBoxImage.Error);
-    }
+    #endregion
 }

@@ -40,7 +40,7 @@
         <Button x:Name="InvokeBtn" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Cursor="Hand" Click="InvokeBtn_Click" Margin="4,8,2,8" FontSize="20" Background="#FF6CDA4E" BorderBrush="#FF36A238" Foreground="White" IsEnabled="False">Invoke ▶</Button>
 
         <TextBlock Grid.Row="3" Grid.Column="0" Margin="8,0,0,-12" VerticalAlignment="Bottom">Method arguments:</TextBlock>
-        <ListBox 
+        <ListBox
             x:Name="ArgumentsList"
             SelectionChanged="ArgumentsList_SelectionChanged"
             Grid.Row="5"
