@@ -50,6 +50,7 @@ public partial class AddArgumentPrompt : Window
             }
             else if (argumentType.ToLower() == "String value".ToLower())
             {
+                argumentToSend.Name = '"' + Argument.Text + '"';
                 argumentToSend.Content = Argument.Text;
             }
             
