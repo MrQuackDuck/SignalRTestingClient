@@ -12,6 +12,8 @@ public partial class SetAuthHeaderPrompt : Window
     public SetAuthHeaderPrompt(string initialJwt)
     {
         InitializeComponent();
+        Topmost = true;
+        WindowStartupLocation = WindowStartupLocation.CenterScreen;
         JWT.Text = initialJwt;
     }
 

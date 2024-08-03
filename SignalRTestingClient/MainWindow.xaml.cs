@@ -252,7 +252,6 @@ public partial class MainWindow : Window
     private void AuthBtn_Click(object sender, RoutedEventArgs e)
     {
         var prompt = new SetAuthHeaderPrompt(jwt);
-        prompt.WindowStartupLocation = WindowStartupLocation.CenterScreen;
         prompt.SetBtnClicked += token=>
         {
             jwt = token;
@@ -275,7 +274,6 @@ public partial class MainWindow : Window
     private void AddArgument_Click(object sender, RoutedEventArgs e)
     {
         var prompt = new AddArgumentPrompt();
-        prompt.WindowStartupLocation = WindowStartupLocation.CenterScreen;
         prompt.AddBtnClicked += o =>
         {
             _arguments.Add(o);

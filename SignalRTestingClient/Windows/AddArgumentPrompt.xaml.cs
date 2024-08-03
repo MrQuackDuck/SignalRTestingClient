@@ -18,6 +18,8 @@ public partial class AddArgumentPrompt : Window
     public AddArgumentPrompt()
     {
         InitializeComponent();
+        Topmost = true;
+        WindowStartupLocation = WindowStartupLocation.CenterScreen;
     }
 
     #region Methods
