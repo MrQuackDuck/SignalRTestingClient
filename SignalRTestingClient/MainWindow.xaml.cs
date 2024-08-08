@@ -12,10 +12,10 @@ namespace SignalRTestingClient;
 public partial class MainWindow : Window
 {
     private HubConnection _connection = default!;
-    private List<SignalRArgument> _arguments = new ();
+    private List<SignalRArgument> _arguments = [];
     private SignalRArgument _currentSelectedArgument = default!;
     private string jwt = string.Empty;
-    private List<string> methodsToListen = new();
+    private List<string> methodsToListen = [];
 
     public MainWindow()
     {
@@ -67,7 +67,7 @@ public partial class MainWindow : Window
         foreach (var method in methodsToListen)
             _connection.Remove(method);
 
-        methodsToListen = new();
+        methodsToListen = [];
 
         // Getting the value of "AcceptMethods" input, removing whitespaces
         var methodsStr = AcceptMethods.Text.Replace(" ", string.Empty);
