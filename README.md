@@ -16,6 +16,8 @@ A **WPF client** for **testing SignalR APIs**.
 - ❌ **Set custom headers** for the connection
 - ❌ **Save the state** of the app
 
-## 📷 Screenshots
-<img height=300 src="https://github.com/user-attachments/assets/71bd023a-48d7-4c63-b127-cb90d407307c" />
-<img height=300 src="https://github.com/user-attachments/assets/e256132d-d5d8-45c5-a4d3-050c2d9a19b6" />
+## 👀 Screenshots
+
+| <img src="https://github.com/user-attachments/assets/b0e821ae-7ec2-4fd9-bad8-a023b4f4e17e" /> | <img src="https://github.com/user-attachments/assets/fbca8fb8-d2da-4bf8-95d7-18b640974727" /> |
+| ------------- |:-------------:|
+| <img src="https://github.com/user-attachments/assets/46a5f04b-df0f-4529-bd35-c06e80d96b3a" /> | <img src="https://github.com/user-attachments/assets/24480ada-6e0e-4388-942a-ffe01018b419" /> |
